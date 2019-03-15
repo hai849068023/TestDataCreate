@@ -18,6 +18,7 @@ def updateImage(groupName, imagedir):
         pigcms.find_element_by_css_selector('.el-icon-circle-plus-outline').click()
         pigcms.find_element_by_css_selector('.setAddClassify input').send_keys(groupName)
         pigcms.find_element_by_css_selector('.el-icon-circle-check.i1').click()
+        pigcms.find_elements_by_css_selector('.li.typename.clearfix')[-1].click()
     # 选中创建的分组
     getGroupslistele = pigcms.find_elements_by_css_selector('.li.typename.clearfix')
     for groupele in getGroupslistele:
@@ -42,3 +43,27 @@ def updateImage(groupName, imagedir):
         else:
             print('图片未上传成功继续等待...')
     return 'success'
+
+
+def timeSet(days=7):
+    '''
+    设置开始时间
+    days参数是指活动周期天数默认7天
+    调用时只要直接调用函数即可操作点击输入框并选择时间输入 
+    '''
+
+    # 点击开始时间框
+    pigcms.find_elements_by_css_selector('.el-date-editor--datetime')[0].click()
+    # 设置活动开始时间
+    pigcms.find_element_by_css_selector('.el-button--text').click()
+
+    # 设置结束时间
+    # 点击结束时间框
+    pigcms.find_elements_by_css_selector('.el-date-editor--datetime')[1].click()
+    # 点击可选时间段第days天的时间点
+    pigcms.find_elements_by_css_selector('.el-picker-panel__content')[1].\
+        find_elements_by_css_selector('.available')[days].click()
+    pigcms.find_elements_by_css_selector('.is-plain')[1].click()
+    return 'success'
+
+

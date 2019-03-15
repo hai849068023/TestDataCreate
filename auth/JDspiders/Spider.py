@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 
 # 商品爬去
 def goodsSipder(keyword, activite, number=10):
+    print('数据爬取中.....')
     # 获取的数据字典
     data = {}  #商品名称、图片名称、详情描述
     # 定义请求头
@@ -68,8 +69,9 @@ def goodsSipder(keyword, activite, number=10):
 
         data[i] = pintuandata
         i += 1
+    print('数据爬取完成，继续！')
     return data
 
 
 if __name__ == '__main__':
-    goodsSipder('男装', 'goods')
+    goodsSipder('零食', 'goods')

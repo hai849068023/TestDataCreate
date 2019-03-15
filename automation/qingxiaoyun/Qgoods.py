@@ -25,12 +25,12 @@ class AddGoods:
             grouplist = []
             for group in groupsele:
                 grouplist.append(group.text)
-            index = grouplist.index(groupName)
+            index = grouplist.index(groupName[:2])
         except:
             # 如果触发异常说明不存在需要创建的分组手动创建
             pigcms.find_elements_by_css_selector('.cp.maincl.ml20')[1].click()
             pigcms.find_elements_by_css_selector('.inpBox.title.clearfix')[0] \
-                .find_element_by_css_selector('.el-input__inner').send_keys(groupName)
+                .find_element_by_css_selector('.el-input__inner').send_keys(groupName[:2])
             pigcms.find_elements_by_css_selector('.popbtns button')[0].click()
             # 元素失效重新获取
             get_element = pigcms.find_elements_by_css_selector('.bascInfo .turntip.flex')
@@ -39,7 +39,7 @@ class AddGoods:
             grouplist = []
             for group in groupsele:
                 grouplist.append(group.text)
-            index = grouplist.index(groupName)
+            index = grouplist.index(groupName[:2])
             groupsele[index].click()
             pigcms.find_element_by_css_selector('.el-select.el-select--small').click()
         else:
@@ -51,7 +51,7 @@ class AddGoods:
         pigcms.find_elements_by_css_selector('.el-button.el-button--primary')[1].click()
         imagedir = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + \
                    '\\' + 'auth' + '\\' + 'static' + '\\' + 'goods' + '\\' + goodsData[needtimes+1][1]
-        upresult = updateImage(groupName, imagedir)
+        upresult = updateImage(groupName[:2], imagedir)
 
 
     # 库存规格
@@ -161,26 +161,23 @@ if __name__ == '__main__':
         if '电商系统' in appname:
             # 进入商城内容
             app.click()
-        else:
-            continue
+            break
         i += 1
     # 获取商城所有菜单
     menu = applicationlist[i].find_elements_by_css_selector('.el-menu-item')
     # 进入商城管理
     menu[0].click()
     # 添加商品
-    groupName = input('输入一个商品分组（如：男装）：  ')
+    groupName = input('输入一个商品分类及数量（如：男装 12）：')
     # 调用爬虫函数
-    print('数据爬取中.....')
-    goodsData = goodsSipder(groupName, 'goods', 15)
-    print('数据爬取完成，继续！')
+    goodsData = goodsSipder(groupName[:2], 'goods', int(groupName[-2:]))
 
     '''
     添加数据操作
     首先人工确定需要添加数据的条数
     然后使用爬去的数据填充内容进行添加测试
     '''
-    for i in range(15):
+    for i in range(int(groupName[-2:])):
         # 点击添加按钮
         pigcms.find_element_by_css_selector('.topOpaa.mb20.flex.flex-pack-justify button').click()
         # 初始化
